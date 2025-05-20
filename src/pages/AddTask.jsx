@@ -1,40 +1,14 @@
-import { useRef, useState } from "react"
+import useTasks from "../hooks/useTasks"
 
 export default function AddTask() {
 
-    const [name, setName] = useState('')
-    const descriptionRef = useRef()
-    const optionRef = useRef()
-    const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
-
-    // verifico se ci sono caratteri speciali nel nome 
-    const isIncludes = symbols.split('').some(symbol => name.includes(symbol))
-    console.log(isIncludes);
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        const description = descriptionRef.current.value
-        const option = optionRef.current.value
-
-        if (!name.trim() || !description.trim() || !option) {
-            alert('Compilare tutti i campi')
-            return
-        }
-
-        if (isIncludes) {
-            alert('il nome contiene caratteri speciali')
-        }
-        console.log(`nome: ${name}, descrizione: ${description}. option: ${option}`);
-
-
-    }
+    const { addTask, removeTask, updateTask, descriptionRef, optionRef, name, setName, errorTitle } = useTasks()
 
     return (
         <div>
             <h1>Aggiungi una nuova task</h1>
             <div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => addTask(e)}>
                     <label>
                         <p>Inserisci il nome della task</p>
                         <input
@@ -43,7 +17,7 @@ export default function AddTask() {
                             onChange={e => setName(e.target.value)}
                             placeholder="nome"
                         />
-                        {isIncludes && <span className="red">Il nome deve contenere solo caratteri alfanumerici</span>}
+                        {errorTitle && <span className="red">{errorTitle}</span>}
                     </label>
                     <label>
                         <p>Inserisci una descrizione</p>
@@ -62,7 +36,7 @@ export default function AddTask() {
                             <option value="Done">Done</option>
                         </select>
                     </label>
-                    <button type="submit">Aggiungi</button>
+                    <button type="submit" disabled={errorTitle}>Aggiungi</button>
                 </form>
             </div>
         </div>

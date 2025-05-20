@@ -10,7 +10,7 @@ const TaskRow = memo(({ task }) => {
             <tr>
                 <td>{task.title}</td>
                 <td className={`${isToDo ? 'red' : isDoing ? 'orange' : 'green'}`}>{task.status}</td>
-                <td>{task.createdAt}</td>
+                <td>{new Date(task.createdAt).toLocaleDateString()}</td>
             </tr>
         </>
     )

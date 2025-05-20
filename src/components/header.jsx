@@ -5,8 +5,8 @@ export default function Header() {
         <header>
             <h1>Task Manager Avanzato</h1>
             <div>
-                <NavLink to='/tasks-list'>Tasks List</NavLink>
-                <NavLink to='/add-task'>Add Task</NavLink>
+                <NavLink to='tasks-list'>Tasks List</NavLink>
+                <NavLink to='add-task'>Add Task</NavLink>
             </div>
         </header>
     )
