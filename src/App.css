@@ -16,32 +16,48 @@ main {
 }
 
 .orange {
-    color: orange;
+    background-color: orange;
 }
 
 .green {
-    color: green;
+    background-color: green;
 }
 
-.red {
+.error {
     color: red;
 }
 
-form {
+.red {
+    background-color: rgb(180, 9, 9);
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.red,
+.green,
+.orange {
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    font-weight: 800;
+}
+
+.container-form form {
     display: flex;
     flex-direction: column;
     width: 30%;
 }
 
-form p {
+.container-form p {
     margin-bottom: 4px;
 }
 
-form input {
+.container-form input {
     height: 30px;
 }
 
-form textarea {
+.container-form textarea {
     height: 100px;
 }
 
@@ -50,22 +66,50 @@ form select {
     width: 100%;
 }
 
-form input,
+.container-form input,
 textarea,
 select,
-button {
+.submitForm {
     border-radius: 10px;
     border: none;
     background-color: rgb(231, 231, 231);
     width: 100%;
 }
 
-form button {
+.container-form .submitForm {
     margin-top: 20px;
     padding: 10px;
     width: 100%;
 }
 
-form button:hover {
+.container-form .submitForm:hover {
     background-color: rgb(199, 197, 197);
+}
+
+/* DETAIL PAGE */
+.container-detail {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    gap: 15px;
+    border: 1px solid gray;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(8, 139, 226);
+    color: white;
+}
+
+.container-detail h2 {
+    margin-bottom: 0px;
+}
+
+.container-detail button {
+    background-color: rgb(161, 221, 255);
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.container-detail button:hover {
+    background-color: rgb(72, 171, 211);
 }

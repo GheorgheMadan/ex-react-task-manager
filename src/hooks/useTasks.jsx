@@ -1,15 +1,10 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 export default function useTasks() {
 
     // recupero l'api dall file .env 
     const api = import.meta.env.VITE_API_URL
 
-    // stato dell'input name 
-    const [name, setName] = useState('')
-    // gestione form con use ref
-    const descriptionRef = useRef()
-    const optionRef = useRef()
     // Array con tutte le task
     const [tasks, setTasks] = useState([]);
 
@@ -26,41 +21,8 @@ export default function useTasks() {
         })()
     }, [])
 
-
-    // costante contenete simboli
-    const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
-    // verifico se ci sono caratteri speciali nel nome 
-    const isIncludes = symbols.split('').some(symbol => name.includes(symbol))
-    const errorTitle = useMemo(() => {
-        if (!name.trim()) return 'Il campo nome non può essere vuoto.'
-        if (isIncludes) return 'Il nome non può contenere simboli'
-        return ''
-    }, [name])
-
-
     // Funzione per aggiornare tutte le task 
-    const addTask = async (e) => {
-
-        e.preventDefault()
-
-        const description = descriptionRef.current.value
-        const option = optionRef.current.value
-
-        if (errorTitle || !description.trim() || !option) {
-            alert('Compilare tutti i campi')
-            return
-        }
-
-        if (isIncludes) {
-            alert('il nome contiene caratteri speciali')
-            return
-        }
-
-        const newTask = {
-            title: name,
-            description: description,
-            status: option
-        }
+    const addTask = async (newTask) => {
 
         let result;
         try {
@@ -72,27 +34,41 @@ export default function useTasks() {
                 body: JSON.stringify(newTask)
             })
             result = await res.json();
-            console.log(result);
-            if (result.success) {
-                setTasks([...tasks, newTask])
+            const { success, message, task } = result
+            if (success) {
+                setTasks(prev => [...prev, task])
                 alert('Task aggiunta con successo')
-                setName('')
-                descriptionRef.current.value = ''
-                optionRef.current.value = ''
             }
         } catch (error) {
-            console.error({ ...result, message: error });
+            console.error({ ...result, message: result.message });
             alert('Operazione fallita, riprova.')
         }
     }
 
-    const removeTask = (id) => {
-        console.log('Remove Task');
+    const navigate = useNavigate()
+
+    const removeTask = async (taskId) => {
+        const filtredTasks = tasks.filter(task => taskId !== task.id)
+        let result
+        try {
+            const res = await fetch(`${api}/tasks/${taskId}`, {
+                method: "DELETE"
+            })
+            result = await res.json()
+            if (result.success) {
+                setTasks(filtredTasks)
+                navigate('/tasks-list')
+                alert('Task eliminata con successo')
+            }
+            console.log(result);
+        } catch (error) {
+            if (!result.success) return alert(result.message)
+        }
     }
 
     const updateTask = (id) => {
         console.log('update task');
     }
 
-    return { tasks, setTasks, addTask, removeTask, updateTask, descriptionRef, optionRef, name, setName, errorTitle }
+    return { tasks, setTasks, addTask, removeTask, updateTask }
 }
