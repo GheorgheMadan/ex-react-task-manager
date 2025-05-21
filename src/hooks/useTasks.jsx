@@ -66,8 +66,25 @@ export default function useTasks() {
         }
     }
 
-    const updateTask = (id) => {
-        console.log('update task');
+    const updateTask = async (updatedTask, id) => {
+        let result
+        try {
+            const res = await fetch(`${api}/tasks/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedTask)
+            })
+            result = await res.json()
+            const { success, task } = result
+            if (success) {
+                // mappo le task e aggiorno solo quella che ha l'id uguale a quello passato in questo modo non duplico le task
+                setTasks(prev => prev.map(prevTask => prevTask.id === task.id ? task : prevTask));
+            }
+        } catch (error) {
+            console.error(result.success, result.message);
+        }
     }
 
     return { tasks, setTasks, addTask, removeTask, updateTask }

@@ -1,4 +1,3 @@
-import useTasks from "../hooks/useTasks"
 import { useContext, useRef, useMemo, useState } from "react"
 import { GlobalContext } from "../context/GlobalContext"
 export default function AddTask() {
@@ -15,10 +14,11 @@ export default function AddTask() {
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
     // verifico se ci sono caratteri speciali nel nome 
     const isIncludes = symbols.split('').some(symbol => name.includes(symbol))
+
     const errorTitle = useMemo(() => {
         if (!name.trim()) return 'Il campo nome non può essere vuoto.'
         if (isIncludes) return 'Il nome non può contenere simboli'
-        return ''
+        return
     }, [name])
 
     const handleSubmit = async (e) => {

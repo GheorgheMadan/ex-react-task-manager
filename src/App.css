@@ -113,3 +113,37 @@ select,
 .container-detail button:hover {
     background-color: rgb(72, 171, 211);
 }
+
+.container-modale {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.507);
+    z-index: 100;
+}
+
+.modale {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: 99999;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    padding: 30px;
+}
+
+.modale form label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 15px;
+    width: 350px;
+}
+
+
+table thead th {
+    cursor: pointer;
+}
