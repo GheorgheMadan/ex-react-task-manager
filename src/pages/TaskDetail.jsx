@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useContext, useMemo, useState, useRef, useEffect } from "react"
 import { GlobalContext } from "../context/GlobalContext"
 import Modal from "../components/Modal"
-import EditTaskModal from "../components/EditTaskModal"
+import dayjs from "dayjs"
 
 export default function TaskDetail() {
 
@@ -31,14 +31,13 @@ export default function TaskDetail() {
     const [formDescription, setFormDescription] = useState('')
     const [formStatus, setFormStatus] = useState('')
 
-    // Assegno al form come value i dati che contiene la task in modo da poter avere gia i campi pre compilati
     useEffect(() => {
-        if (task && show2) {
-            setFormTitle(task.title)
-            setFormDescription(task.description)
-            setFormStatus(task.status)
+        if (task) {
+            setFormTitle(task?.title)
+            setFormDescription(task?.description)
+            setFormStatus(task?.status)
         }
-    }, [show2, task])
+    }, [task])
 
     // costante contenete simboli
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~"
@@ -79,6 +78,9 @@ export default function TaskDetail() {
         }
     }
 
+    // se non viene trovata la task allora interrompo il resto del codice e mostro un messaggio
+    if (!task) return <h1>Nessuna task trovata</h1>
+
     return (
         <div className="container-detail" key={task?.id}>
             <h2>{task?.title}</h2>
@@ -86,7 +88,7 @@ export default function TaskDetail() {
             <div>
                 <span className={`${task?.status === 'To do' ? 'red' : task?.status === 'Doing' ? 'orange' : 'green'}`}>{task?.status}</span>
             </div>
-            <span>Data creazione: {new Date(task?.createdAt).toLocaleDateString()}</span>
+            <span>Data creazione: {dayjs(task?.createdAt).format('DD/MM/YYYY')}</span>
 
             {/* Cliccando su elimina task aparirà la modale con la richiesta di conferma */}
             <button onClick={() => setShow(true)}>Elimina Task</button>
@@ -94,7 +96,7 @@ export default function TaskDetail() {
             {/* Passo le prop personalizzate in modo da poter riutilizzare la modale */}
             <Modal
                 title='Vuoi davvero eliminare questa task?'
-                content='Questa operazione rimuoverà definitivamente la task. Procedere?'
+                content={<p>Questa operazione rimuoverà definitivamente la task. Procedere?</p>}
                 confirmText='Elimina'
                 show={show}
                 // passo la funzione onConfirm che verrà eseguita quando l'utente clicca su elimina allora la modale si chiude e viene eseguita la funzione removeTask passata dal contesto globale
@@ -104,8 +106,7 @@ export default function TaskDetail() {
                 }}
                 onClose={() => setShow(false)}
             />
-
-            <EditTaskModal
+            <Modal
                 show={show2}
                 onClose={() => setShow2(false)}
                 title='Modifica Task'

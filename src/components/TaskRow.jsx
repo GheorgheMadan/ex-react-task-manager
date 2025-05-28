@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-const TaskRow = memo(({ task }) => {
+import dayjs from "dayjs";
+const TaskRow = memo(({ task, checked, onToggle }) => {
 
     const isToDo = task.status === 'To do'
     const isDoing = task.status === 'Doing'
@@ -8,10 +9,20 @@ const TaskRow = memo(({ task }) => {
     return (
         <>
             <tr>
-                <td><Link to={`task/${task.id}`}>{task.title}</Link></td>
+                <td>
+                    <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => onToggle(task.id)}
+                    />
+                </td>
+                <td>
+                    <Link to={`task/${task.id}`}>{task.title}</Link>
+                </td>
                 <td className={`${isToDo ? 'red' : isDoing ? 'orange' : 'green'}`}>{task.status}</td>
-                <td>{new Date(task.createdAt).toLocaleDateString()}</td>
+                <td>{dayjs(task.createdAt).format('DD/MM/YYYY')}</td>
             </tr>
+
         </>
     )
 })

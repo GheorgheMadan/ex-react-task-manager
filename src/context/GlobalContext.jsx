@@ -8,10 +8,10 @@ import useTasks from "../hooks/useTasks";
 // creo il provider, utilizzo children per passare i dati al contesto
 export const GlobalProvider = ({ children }) => {
 
-    const { tasks, setTasks, addTask, removeTask, updateTask } = useTasks()
+    const { tasks, setTasks, addTask, removeTask, updateTask, removeMultipleTasks } = useTasks()
 
     return (
-        <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask, updateTask }}>
+        <GlobalContext.Provider value={{ tasks, setTasks, addTask, removeTask, updateTask, removeMultipleTasks }}>
             {children} {/* QUA VIENE INSERITO IL COMPONENTE app.jsx */}
         </GlobalContext.Provider>
     )

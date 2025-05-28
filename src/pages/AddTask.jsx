@@ -46,6 +46,7 @@ export default function AddTask() {
             setName('')
             descriptionRef.current.value = ''
             optionRef.current.value = ''
+            alert('Task aggiunta con successo')
         } catch (error) {
             console.error(error);
         }
